@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { asset } from "@/lib/asset";
 
 /** شعار جامعة المجمعة + اسم الهاكثون (Lockup) — شعار الهاكثون Placeholder حتى اعتماده. */
 export function Logo({
@@ -19,7 +20,7 @@ export function Logo({
     >
       <span className="relative block size-11 shrink-0 overflow-hidden rounded-xl bg-white ring-1 ring-border">
         <Image
-          src="/logos/majmaah-university.png"
+          src={asset("/logos/majmaah-university.png")}
           alt="شعار جامعة المجمعة"
           fill
           sizes="44px"

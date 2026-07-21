@@ -4,6 +4,7 @@ import { organizer } from "@/data/partners";
 import { toArabicDigits } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
 import { RegisterButton } from "@/components/ui/CtaButtons";
+import { asset } from "@/lib/asset";
 
 export function Footer() {
   const year = toArabicDigits(new Date().getFullYear());
@@ -19,7 +20,7 @@ export function Footer() {
           <div className="flex items-center gap-3">
             <span className="relative block size-14 overflow-hidden rounded-xl bg-white ring-1 ring-border">
               <Image
-                src={organizer.logo}
+                src={asset(organizer.logo)}
                 alt={`شعار ${organizer.name}`}
                 fill
                 sizes="56px"

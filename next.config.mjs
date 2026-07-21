@@ -17,6 +17,11 @@ const nextConfig = {
   trailingSlash: true,
   basePath: isPages ? repoBase : "",
   assetPrefix: isPages ? `${repoBase}/` : "",
+  // يُمرَّر للعميل ليضيف بادئة المسار لصور public يدويًا
+  // (next/image لا يضيف basePath للصور مع التصدير الثابت + unoptimized).
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isPages ? repoBase : "",
+  },
   // حصر جذر تتبّع الملفات على مجلد المشروع (يوجد lockfile في المجلد الأب).
   outputFileTracingRoot: __dirname,
   images: {

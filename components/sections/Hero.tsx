@@ -6,6 +6,7 @@ import { siteConfig } from "@/data/site";
 import { Icon } from "@/components/ui/Icon";
 import { RegisterButton, GuideButton } from "@/components/ui/CtaButtons";
 import { RegistrationStatusBadge } from "@/components/ui/RegistrationStatusBadge";
+import { asset } from "@/lib/asset";
 import { Countdown } from "./Countdown";
 
 /**
@@ -41,7 +42,7 @@ export function Hero() {
         aria-hidden
       >
         <Image
-          src={HERO_IMAGE}
+          src={asset(HERO_IMAGE)}
           alt=""
           fill
           priority
