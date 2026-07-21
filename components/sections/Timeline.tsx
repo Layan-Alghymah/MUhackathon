@@ -1,0 +1,161 @@
+"use client";
+
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+import { useRef } from "react";
+import { timeline } from "@/data/timeline";
+import type { TimelinePhase } from "@/data/types";
+import { toArabicDigits } from "@/lib/utils";
+import { Icon } from "@/components/ui/Icon";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+
+/** بطاقة محطة زمنية. */
+function PhaseCard({
+  phase,
+  index,
+  align,
+}: {
+  phase: TimelinePhase;
+  index: number;
+  align: "start" | "end";
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.article
+      initial={{ opacity: 0, x: reduce ? 0 : align === "end" ? 40 : -40 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className={
+        "rounded-2xl border bg-card p-5 transition-colors hover:border-brand-green/40 " +
+        (phase.highlight
+          ? "border-brand-gold/50 ring-1 ring-brand-gold/25"
+          : "border-border")
+      }
+    >
+      <div className="flex items-center gap-3">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-brand-green">
+          <Icon name={phase.icon} className="size-5" />
+        </span>
+        <div>
+          <div className="text-[0.7rem] font-bold text-brand-gold tabular-nums">
+            المرحلة {toArabicDigits(String(index + 1).padStart(2, "0"))}
+          </div>
+          <h3 className="text-base font-bold leading-tight">{phase.title}</h3>
+        </div>
+      </div>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+        {phase.description}
+      </p>
+      <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
+        <Icon name="CalendarDays" className="size-3.5" />
+        {phase.date}
+      </div>
+    </motion.article>
+  );
+}
+
+/** نقطة متوهجة على المسار. */
+function GlowDot() {
+  const reduce = useReducedMotion();
+  return (
+    <motion.span
+      initial={{ scale: reduce ? 1 : 0.4, opacity: 0 }}
+      whileInView={{ scale: 1, opacity: 1 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ type: "spring", stiffness: 300, damping: 18 }}
+      className="relative z-10 flex size-5 items-center justify-center rounded-full border-2 border-background bg-brand-green shadow-[0_0_0_4px_var(--glow)]"
+    >
+      <span className="size-1.5 rounded-full bg-white" />
+    </motion.span>
+  );
+}
+
+export function Timeline() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 65%", "end 55%"],
+  });
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    restDelta: 0.001,
+  });
+  const mobileScaleY = useTransform(scaleY, (v) => v);
+
+  return (
+    <section id="timeline" className="bg-surface-alt py-20 sm:py-28">
+      <div className="container-site">
+        <SectionHeader
+          eyebrow="البرنامج الزمني"
+          title="رحلة الهاكثون خطوة بخطوة"
+          description="من الإعلان وفتح التسجيل حتى التحكيم والعروض النهائية وحفل التكريم."
+        />
+
+        {/* ─────────── سطح المكتب: مسار مركزي متدرّج ─────────── */}
+        <div ref={ref} className="relative mt-16 hidden lg:block">
+          {/* الخط الأساسي */}
+          <div className="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 bg-border" />
+          {/* الخط المتدرّج الذي يُرسم أثناء التمرير */}
+          <motion.div
+            style={{ scaleY }}
+            className="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 origin-top bg-gradient-to-b from-brand-green via-brand-green-soft to-brand-gold"
+            aria-hidden
+          />
+
+          <ol className="relative flex flex-col gap-4">
+            {timeline.map((phase, i) => {
+              const align = i % 2 === 0 ? "start" : "end";
+              return (
+                <li
+                  key={phase.id}
+                  className="grid grid-cols-[1fr_auto_1fr] items-center gap-8"
+                >
+                  <div className={align === "end" ? "" : "col-start-1"}>
+                    {align === "start" && (
+                      <PhaseCard phase={phase} index={i} align="start" />
+                    )}
+                  </div>
+                  <div className="flex justify-center">
+                    <GlowDot />
+                  </div>
+                  <div className={align === "start" ? "" : "col-start-3"}>
+                    {align === "end" && (
+                      <PhaseCard phase={phase} index={i} align="end" />
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+
+        {/* ─────────── الجوال/التابلت: مسار عمودي واضح ─────────── */}
+        <div className="relative mt-12 lg:hidden">
+          <div className="absolute inset-y-0 start-[0.6rem] w-0.5 bg-border" />
+          <motion.div
+            style={{ scaleY: mobileScaleY }}
+            className="absolute inset-y-0 start-[0.6rem] w-0.5 origin-top bg-gradient-to-b from-brand-green via-brand-green-soft to-brand-gold"
+            aria-hidden
+          />
+          <ol className="flex flex-col gap-6">
+            {timeline.map((phase, i) => (
+              <li key={phase.id} className="relative ps-10">
+                <span className="absolute start-0 top-1.5">
+                  <GlowDot />
+                </span>
+                <PhaseCard phase={phase} index={i} align="start" />
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+  );
+}
