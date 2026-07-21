@@ -24,10 +24,8 @@ export const siteConfig: SiteConfig = {
   registrationOpen: { label: "٢٦ يوليو", month: 7, day: 26 },
   registrationClose: { label: "٥ أغسطس", month: 8, day: 5 },
 
-  // ⚠️ مطلوب: ضع الموعد النهائي بصيغة ISO كاملة لتفعيل العدّاد الحيّ،
-  //    مثال (٥ أغسطس نهاية اليوم): "2026-08-05T23:59:59".
-  //    يبقى null حتى تعتمد الجامعة السنة رسميًا (لا تُخترع سنة).
-  registrationDeadline: null,
+  // الموعد النهائي المعتمد للتسجيل (٥ أغسطس ٢٠٢٦ نهاية اليوم) — يفعّل العدّاد الحيّ.
+  registrationDeadline: "2026-08-05T23:59:59",
 
   // رابط التسجيل الرسمي غير متوفر بعد → الزر يظهر Disabled.
   registrationUrl: null,
