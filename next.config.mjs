@@ -3,13 +3,25 @@ import { dirname } from "node:path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+// عند البناء لـ GitHub Pages يُضبط GITHUB_PAGES=true فيُضاف مسار المشروع الأساسي.
+// محليًا يبقى فارغًا حتى يعمل الموقع على الجذر.
+const isPages = process.env.GITHUB_PAGES === "true";
+const repoBase = "/MUhackathon";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // تصدير ثابت (HTML) مناسب لاستضافة GitHub Pages.
+  output: "export",
+  // روابط بشرطة نهائية لتوليد index.html داخل كل مسار (يخدمها Pages بثبات).
+  trailingSlash: true,
+  basePath: isPages ? repoBase : "",
+  assetPrefix: isPages ? `${repoBase}/` : "",
   // حصر جذر تتبّع الملفات على مجلد المشروع (يوجد lockfile في المجلد الأب).
   outputFileTracingRoot: __dirname,
   images: {
-    // الصور المحلية فقط في هذه المرحلة (Placeholders). أضِف نطاقات خارجية عند الحاجة.
+    // مطلوب مع التصدير الثابت (لا خادم لتحسين الصور).
+    unoptimized: true,
     remotePatterns: [],
   },
 };
