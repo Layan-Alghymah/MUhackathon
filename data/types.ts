@@ -5,6 +5,28 @@ export interface NavLink {
   label: string;
 }
 
+/** حالة التسجيل العامة للهاكثون (لا تُحدد لكل مسار). */
+export type RegistrationStatus = "open" | "closed" | "upcoming";
+
+/** فئات عناصر البرنامج القابلة للفلترة (مشتقة من المحتوى الرسمي فقط). */
+export type ProgramCategory =
+  | "intro"
+  | "remote"
+  | "onsite"
+  | "closing";
+
+export interface ProgramItem {
+  id: string;
+  date: string;
+  title: string;
+  icon: string;
+  category: ProgramCategory;
+  /** معلومة إضافية اختيارية (مثل وقت الورش الحضورية). */
+  meta?: string;
+  /** ترتيب زمني ثابت. */
+  order: number;
+}
+
 /** أعلام تفعيل الأقسام — تبقى false ما لم تتوفر بيانات رسمية. */
 export interface FeatureFlags {
   showAwards: boolean;
@@ -37,6 +59,11 @@ export interface SiteConfig {
   registrationUrl: string | null;
   /** رابط الدليل الإرشادي (PDF) — null → زر Disabled. */
   guideUrl: string | null;
+  /**
+   * حالة التسجيل العامة للهاكثون (تُقرأ مركزيًا، وتُعرض عبر شارة الحالة).
+   * "upcoming" = قريبًا · "open" = مفتوح · "closed" = منتهٍ.
+   */
+  registrationStatus: RegistrationStatus;
 }
 
 /** تلميح تاريخ: نص للعرض + شهر/يوم رقمي (1–12) لبناء تاريخ عند اعتماد السنة. */

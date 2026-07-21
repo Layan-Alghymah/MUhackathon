@@ -17,7 +17,8 @@ export function Section({
     <section
       id={id}
       className={cn(
-        "py-20 sm:py-28",
+        // نظام مسافات موحّد (أقل ~20% من السابق) — راحة بصرية دون ازدحام.
+        "py-16 sm:py-24",
         alt && "bg-surface-alt",
         className,
       )}

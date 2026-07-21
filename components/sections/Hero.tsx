@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { siteConfig } from "@/data/site";
 import { Icon } from "@/components/ui/Icon";
 import { RegisterButton, GuideButton } from "@/components/ui/CtaButtons";
+import { RegistrationStatusBadge } from "@/components/ui/RegistrationStatusBadge";
 import { Countdown } from "./Countdown";
 
 const fadeUp = {
@@ -81,20 +82,31 @@ export function Hero() {
             {siteConfig.description}
           </motion.p>
 
-          {/* العدّ التنازلي / التواريخ النصية */}
+          {/* شارة حالة التسجيل العامة */}
           <motion.div
             custom={3}
             variants={fadeUp}
             initial="hidden"
             animate="show"
-            className="mt-8"
+            className="mt-7"
+          >
+            <RegistrationStatusBadge />
+          </motion.div>
+
+          {/* العدّ التنازلي / التواريخ النصية */}
+          <motion.div
+            custom={4}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="mt-5"
           >
             <Countdown />
           </motion.div>
 
           {/* أزرار الإجراء */}
           <motion.div
-            custom={4}
+            custom={5}
             variants={fadeUp}
             initial="hidden"
             animate="show"

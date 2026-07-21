@@ -28,6 +28,10 @@ export const siteConfig: SiteConfig = {
   registrationUrl: null,
   // الدليل الإرشادي غير متوفر بعد → الزر يظهر Disabled.
   guideUrl: null,
+
+  // حالة التسجيل العامة. القيمة الحالية "upcoming" لعدم توفّر رابط تسجيل أو سنة معتمدة.
+  // غيّرها إلى "open" عند فتح التسجيل، أو "closed" عند انتهائه.
+  registrationStatus: "upcoming",
 };
 
 /** أعلام التفعيل — لا يُعرض أي قسم مرتبط بها حتى تتوفر بياناته رسميًا. */

@@ -12,7 +12,7 @@ export function Footer() {
   );
 
   return (
-    <footer className="mt-24 border-t border-border bg-surface-alt">
+    <footer className="mt-20 border-t border-border bg-surface-alt">
       <div className="container-site grid gap-12 py-16 md:grid-cols-12">
         {/* نبذة + منظّم */}
         <div className="md:col-span-5">
@@ -95,7 +95,20 @@ export function Footer() {
           )}
           <div className={hasContact ? "mt-5" : ""}>
             <h3 className="mb-4 text-sm font-bold">انضم إلى الهاكثون</h3>
-            <RegisterButton size="md" />
+            <div className="flex flex-wrap items-center gap-3">
+              <RegisterButton size="md" />
+              {siteConfig.guideUrl && (
+                <a
+                  href={siteConfig.guideUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 text-sm font-semibold transition-colors hover:border-brand-green/40"
+                >
+                  <Icon name="FileText" className="size-4" />
+                  الدليل الإرشادي
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -105,7 +118,13 @@ export function Footer() {
           <p>
             © {year} {siteConfig.organizer}. جميع الحقوق محفوظة.
           </p>
-          <p>{siteConfig.name}</p>
+          <a
+            href="#hero"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 font-semibold text-foreground transition-colors hover:border-brand-green/40"
+          >
+            <Icon name="ArrowDown" className="size-3.5 rotate-180" />
+            العودة إلى الأعلى
+          </a>
         </div>
       </div>
     </footer>

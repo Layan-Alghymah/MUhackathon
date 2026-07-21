@@ -3,8 +3,23 @@
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/data/site";
 import { getRegistrationCloseTs, isCountdownEnabled } from "@/lib/dates";
-import { toArabicDigits } from "@/lib/utils";
+import { toArabicDigits, arabicPlural } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
+
+const DAY_FORMS = { one: "يوم واحد", two: "يومان", few: "أيام", many: "يومًا" };
+const HOUR_FORMS = {
+  one: "ساعة واحدة",
+  two: "ساعتان",
+  few: "ساعات",
+  many: "ساعة",
+};
+
+/** عبارة عربية سليمة للوقت المتبقّي (أيام، أو ساعات إذا بقي أقل من يوم). */
+function remainingLabel(parts: Parts): string {
+  return parts.days >= 1
+    ? arabicPlural(parts.days, DAY_FORMS)
+    : arabicPlural(parts.hours, HOUR_FORMS);
+}
 
 interface Parts {
   days: number;
@@ -77,7 +92,16 @@ export function Countdown() {
   return (
     <div>
       <p className="mb-3 text-sm font-medium text-muted-foreground">
-        يغلق التسجيل المبدئي خلال
+        {mounted && parts ? (
+          <>
+            المتبقّي على إغلاق التسجيل المبدئي:{" "}
+            <span className="font-bold text-foreground">
+              {remainingLabel(parts)}
+            </span>
+          </>
+        ) : (
+          "يغلق التسجيل المبدئي خلال"
+        )}
       </p>
       <div
         className="flex gap-2.5 sm:gap-3"

@@ -76,8 +76,13 @@ function GlowDot() {
   );
 }
 
+/** مسار منحنٍ خفيف يُرسم أثناء التمرير (viewBox يُمدّ رأسيًا). */
+const CURVE =
+  "M 20 0 C 26 120, 14 240, 20 360 C 26 480, 14 600, 20 720 C 26 840, 14 960, 20 1000";
+
 export function Timeline() {
   const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 65%", "end 55%"],
@@ -90,7 +95,7 @@ export function Timeline() {
   const mobileScaleY = useTransform(scaleY, (v) => v);
 
   return (
-    <section id="timeline" className="bg-surface-alt py-20 sm:py-28">
+    <section id="timeline" className="bg-surface-alt py-16 sm:py-24">
       <div className="container-site">
         <SectionHeader
           eyebrow="البرنامج الزمني"
@@ -98,16 +103,39 @@ export function Timeline() {
           description="من الإعلان وفتح التسجيل حتى التحكيم والعروض النهائية وحفل التكريم."
         />
 
-        {/* ─────────── سطح المكتب: مسار مركزي متدرّج ─────────── */}
-        <div ref={ref} className="relative mt-16 hidden lg:block">
-          {/* الخط الأساسي */}
-          <div className="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 bg-border" />
-          {/* الخط المتدرّج الذي يُرسم أثناء التمرير */}
-          <motion.div
-            style={{ scaleY }}
-            className="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 origin-top bg-gradient-to-b from-brand-green via-brand-green-soft to-brand-gold"
+        {/* ─────────── سطح المكتب: مسار مركزي منحنٍ يُرسم ─────────── */}
+        <div ref={ref} className="relative mt-14 hidden lg:block">
+          <svg
+            className="pointer-events-none absolute inset-y-0 left-1/2 h-full w-10 -translate-x-1/2"
+            viewBox="0 0 40 1000"
+            preserveAspectRatio="none"
+            fill="none"
             aria-hidden
-          />
+          >
+            <defs>
+              <linearGradient id="tl-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="var(--brand-green)" />
+                <stop offset="55%" stopColor="var(--brand-green-soft)" />
+                <stop offset="100%" stopColor="var(--brand-gold)" />
+              </linearGradient>
+            </defs>
+            {/* المسار الأساسي الباهت */}
+            <path
+              d={CURVE}
+              stroke="var(--border)"
+              strokeWidth="2"
+              vectorEffect="non-scaling-stroke"
+            />
+            {/* المسار المتدرّج الذي يُرسم مع التمرير */}
+            <motion.path
+              d={CURVE}
+              stroke="url(#tl-grad)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              vectorEffect="non-scaling-stroke"
+              style={{ pathLength: reduce ? 1 : scaleY }}
+            />
+          </svg>
 
           <ol className="relative flex flex-col gap-4">
             {timeline.map((phase, i) => {

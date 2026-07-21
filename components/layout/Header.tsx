@@ -57,7 +57,12 @@ export function Header() {
           : "border-b border-transparent bg-transparent",
       )}
     >
-      <div className="container-site flex h-16 items-center justify-between gap-4 sm:h-[4.5rem]">
+      <div
+        className={cn(
+          "container-site flex items-center justify-between gap-4 transition-[height] duration-300",
+          scrolled ? "h-14 sm:h-16" : "h-16 sm:h-[4.75rem]",
+        )}
+      >
         <Logo />
 
         {/* تنقّل سطح المكتب */}

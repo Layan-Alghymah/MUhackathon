@@ -13,7 +13,7 @@ export function Tracks() {
         description="اختر المجال الأقرب لفكرتك واستكشف أمثلة مجالات التحديات في كل مسار."
       />
 
-      <div className="mt-14 grid gap-5 md:grid-cols-3">
+      <div className="mt-12 grid gap-5 md:grid-cols-3">
         {tracks.map((track, i) => (
           <Reveal key={track.slug} delay={0.07 * i} className="h-full">
             <TrackCard track={track} />
