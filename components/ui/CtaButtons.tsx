@@ -10,16 +10,39 @@ const sizes = {
   lg: "px-7 py-3.5 text-base",
 };
 
-/** زر التسجيل — يقرأ الرابط من siteConfig؛ يظهر Disabled إذا لم يتوفر. */
+/** زر التسجيل — يقرأ الرابط من siteConfig؛ يظهر Disabled إذا لم يتوفر أو انتهى. */
 export function RegisterButton({
   size = "lg",
   className,
   label = "سجّل الآن",
+  forceDisabled = false,
 }: {
   size?: keyof typeof sizes;
   className?: string;
   label?: string;
+  /** تعطيل الزر قسريًا (مثلًا عند انتهاء التسجيل). */
+  forceDisabled?: boolean;
 }) {
+  // انتهى التسجيل → زر معطّل بنص واضح (له الأولوية).
+  if (forceDisabled) {
+    return (
+      <button
+        type="button"
+        disabled
+        aria-disabled
+        className={cn(
+          base,
+          sizes[size],
+          "bg-muted text-muted-foreground opacity-70",
+          className,
+        )}
+      >
+        <Icon name="LockKeyhole" className="size-4" />
+        انتهى التسجيل
+      </button>
+    );
+  }
+
   if (!siteConfig.registrationUrl) {
     return (
       <button

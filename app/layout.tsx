@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import { siteConfig } from "@/data/site";
+import { WhatsAppFloatingButton } from "@/components/ui/WhatsAppFloatingButton";
 import "./globals.css";
 
 const plexArabic = IBM_Plex_Sans_Arabic({
@@ -77,6 +78,7 @@ export default function RootLayout({
           تجاوز إلى المحتوى
         </a>
         {children}
+        <WhatsAppFloatingButton />
       </body>
     </html>
   );

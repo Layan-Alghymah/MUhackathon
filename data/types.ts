@@ -55,6 +55,12 @@ export interface SiteConfig {
   registrationOpen: DateHint;
   /** يوم/شهر إغلاق التسجيل المبدئي. */
   registrationClose: DateHint;
+  /**
+   * الموعد النهائي لانتهاء التسجيل بصيغة ISO كاملة (سنة/شهر/يوم/وقت).
+   * مثال: "2026-08-05T23:59:59". null = لم تُعتمد السنة رسميًا بعد.
+   * عند null: يُعطَّل العدّاد الحيّ ويُعرض التاريخ نصيًا فقط (لا تُخترع سنة).
+   */
+  registrationDeadline: string | null;
   /** رابط التسجيل الخارجي — null → زر Disabled. */
   registrationUrl: string | null;
   /** رابط الدليل الإرشادي (PDF) — null → زر Disabled. */

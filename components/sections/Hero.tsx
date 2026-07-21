@@ -4,10 +4,11 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { siteConfig } from "@/data/site";
 import { Icon } from "@/components/ui/Icon";
-import { RegisterButton, GuideButton } from "@/components/ui/CtaButtons";
+import { RegisterButton } from "@/components/ui/CtaButtons";
 import { RegistrationStatusBadge } from "@/components/ui/RegistrationStatusBadge";
 import { asset } from "@/lib/asset";
-import { Countdown } from "./Countdown";
+import { useCountdown } from "@/lib/useCountdown";
+import { RegistrationCountdown } from "./RegistrationCountdown";
 
 /**
  * مسار صورة خلفية الـHero.
@@ -27,6 +28,7 @@ const fadeUp = {
 
 export function Hero() {
   const reduce = useReducedMotion();
+  const { expired } = useCountdown();
 
   return (
     <section
@@ -106,7 +108,7 @@ export function Hero() {
               {siteConfig.description}
             </motion.p>
 
-            {/* شارة حالة التسجيل العامة */}
+            {/* شارة حالة التسجيل العامة (تصبح "منتهٍ" عند انتهاء العدّاد) */}
             <motion.div
               custom={3}
               variants={fadeUp}
@@ -114,10 +116,10 @@ export function Hero() {
               animate="show"
               className="mt-7"
             >
-              <RegistrationStatusBadge />
+              <RegistrationStatusBadge status={expired ? "closed" : undefined} />
             </motion.div>
 
-            {/* العدّ التنازلي / التواريخ النصية */}
+            {/* عدّاد انتهاء التسجيل — أسفل الوصف وقبل زر التسجيل */}
             <motion.div
               custom={4}
               variants={fadeUp}
@@ -125,19 +127,22 @@ export function Hero() {
               animate="show"
               className="mt-5"
             >
-              <Countdown />
+              <RegistrationCountdown />
             </motion.div>
 
-            {/* أزرار الإجراء */}
+            {/* زر التسجيل — مركزي */}
             <motion.div
               custom={5}
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              className="mt-9 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row"
+              className="mt-9 flex w-full justify-center"
             >
-              <RegisterButton size="lg" className="w-full sm:w-auto" />
-              <GuideButton size="lg" className="w-full sm:w-auto" />
+              <RegisterButton
+                size="lg"
+                className="w-full sm:w-auto"
+                forceDisabled={expired}
+              />
             </motion.div>
           </div>
         </div>

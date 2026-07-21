@@ -1,16 +1,17 @@
 import { siteConfig } from "@/data/site";
 
 /**
- * تاريخ إغلاق التسجيل كـ timestamp — أو null إذا لم تُعتمد السنة رسميًا.
- * عند null يُعطَّل العدّاد وتُعرض التواريخ نصيًا فقط.
+ * الموعد النهائي للتسجيل كـ timestamp — أو null إذا لم يُعتمد بعد.
+ * يُقرأ من siteConfig.registrationDeadline (ISO كامل). عند null يُعطَّل العدّاد.
  */
-export function getRegistrationCloseTs(): number | null {
-  if (siteConfig.year == null) return null;
-  const { month, day } = siteConfig.registrationClose;
-  return new Date(siteConfig.year, month - 1, day, 23, 59, 59).getTime();
+export function getRegistrationDeadlineTs(): number | null {
+  const iso = siteConfig.registrationDeadline;
+  if (!iso) return null;
+  const ts = Date.parse(iso);
+  return Number.isNaN(ts) ? null : ts;
 }
 
-/** هل العدّاد التنازلي مفعّل؟ (يتطلب سنة معتمدة). */
+/** هل العدّاد التنازلي مفعّل؟ (يتطلب موعدًا نهائيًا صحيحًا). */
 export function isCountdownEnabled(): boolean {
-  return siteConfig.year != null;
+  return getRegistrationDeadlineTs() != null;
 }
