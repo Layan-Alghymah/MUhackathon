@@ -38,7 +38,7 @@ export function Hero() {
         initial={reduce ? undefined : { scale: 1.09 }}
         animate={reduce ? undefined : { scale: 1 }}
         transition={{ duration: 2.2, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute inset-0 -z-20"
+        className="absolute inset-0 z-0"
         aria-hidden
       >
         <Image
@@ -55,21 +55,21 @@ export function Hero() {
       {/* طبقات التحسين فوق الصورة */}
       {/* 1) Overlay أخضر داكن شفاف */}
       <div
-        className="absolute inset-0 -z-10 bg-[color-mix(in_oklab,var(--brand-green-deep)_62%,#05070300)]"
+        className="absolute inset-0 z-[1] bg-[color-mix(in_oklab,var(--brand-green-deep)_55%,transparent)]"
         aria-hidden
       />
       {/* 2) تدرّج هادئ من الأعلى والأسفل + دمج مع خلفية الصفحة */}
       <div
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-black/45 via-black/15 to-black/55"
+        className="absolute inset-0 z-[1] bg-gradient-to-b from-black/40 via-black/10 to-black/50"
         aria-hidden
       />
       <div
-        className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-background to-transparent"
+        className="absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t from-background to-transparent"
         aria-hidden
       />
 
       {/* ─────────── المحتوى: مركزي أفقيًا وعموديًا ─────────── */}
-      <div className="container-site">
+      <div className="container-site relative z-10">
         <div className="mx-auto flex max-w-3xl flex-col items-center rounded-[2rem] px-2 text-center">
           {/* لوح زجاجي خفيف جدًا خلف كتلة النص لتعزيز الوضوح */}
           <div className="flex flex-col items-center rounded-[2rem] bg-black/10 px-4 py-8 backdrop-blur-[2px] sm:px-8 sm:py-10">
@@ -150,7 +150,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.9 }}
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 text-white/80 sm:block"
+        className="absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 text-white/80 sm:block"
       >
         <motion.span
           animate={reduce ? undefined : { y: [0, 7, 0] }}
